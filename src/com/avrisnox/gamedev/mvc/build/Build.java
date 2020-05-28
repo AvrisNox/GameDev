@@ -8,4 +8,8 @@ public interface Build {
 	public Controller getController();
 	public Model getModel();
 	public View getView();
+
+	public void init();
+	public void update();
+	public void draw();
 }
