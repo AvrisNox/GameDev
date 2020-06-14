@@ -20,7 +20,9 @@ public abstract class Controller {
 		protected abstract void update();
 	}
 
-	public Controller(Model model) {
+	public Controller() { }
+
+	public void init(Model model) {
 		this.model = model;
 	}
 

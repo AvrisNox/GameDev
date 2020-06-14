@@ -1,20 +1,19 @@
 package com.avrisnox.gamedev.build.Avalanche;
 
-// Engine imports
 import com.avrisnox.gamedev.build.Engine;
-
-// LWJGL imports
+import com.avrisnox.gamedev.mvc.controller.Controller;
+import com.avrisnox.gamedev.mvc.model.Model;
+import com.avrisnox.gamedev.mvc.view.View;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import java.lang.reflect.InvocationTargetException;
 
-// Static LWJGL imports
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 
+
 public class Avalanche extends Engine {
-	public Avalanche() {
-		this.model = new Janus();
-		this.view = new Quercus(this.model, this);
-		this.controller = new Dumbbell(this.model, this.window);
+	public Avalanche(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		super(mClass, vClass, cClass);
 	}
 
 	@Override
@@ -31,7 +30,14 @@ public class Avalanche extends Engine {
 	}
 
 	public static void main(String... args) {
-		Avalanche engine = new Avalanche();
-		engine.run();
+		try {
+			Avalanche engine = new Avalanche(
+					AvModel.class,
+					AvView.class,
+					AvController.class);
+			engine.run();
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			e.printStackTrace();
+		}
 	}
 }
