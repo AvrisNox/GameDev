@@ -6,15 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Pacman {
 	public static void main(String... args) {
-		try {
-			Avalanche engine = new Avalanche(
-					PmModel.class,
-					PmView.class,
-					PmController.class
-			);
-			engine.run();
-		} catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		Avalanche.start(
+				PmModel.class,
+				PmView.class,
+				PmController.class
+		);
 	}
 }
