@@ -16,6 +16,15 @@ public class Avalanche extends Engine {
 		super(mClass, vClass, cClass);
 	}
 
+	public static void start(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) {
+		try {
+			Avalanche engine = new Avalanche(mClass, vClass, cClass);
+			engine.run();
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	protected void destroy() {
 		super.destroy();
@@ -30,14 +39,10 @@ public class Avalanche extends Engine {
 	}
 
 	public static void main(String... args) {
-		try {
-			Avalanche engine = new Avalanche(
-					AvModel.class,
-					AvView.class,
-					AvController.class);
-			engine.run();
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			e.printStackTrace();
-		}
+		Avalanche.start(
+				AvModel.class,
+				AvView.class,
+				AvController.class
+		);
 	}
 }
