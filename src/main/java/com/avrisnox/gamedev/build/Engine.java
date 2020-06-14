@@ -3,6 +3,7 @@ package com.avrisnox.gamedev.build;
 import com.avrisnox.gamedev.mvc.controller.Controller;
 import com.avrisnox.gamedev.mvc.model.Model;
 import com.avrisnox.gamedev.mvc.view.View;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -23,6 +24,10 @@ public abstract class Engine {
 		view.init(model);
 		controller = cClass.getConstructor().newInstance();
 		controller.init(model);
+	}
+
+	public static void start(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) {
+		throw new NotImplementedException();
 	}
 
 	/**
