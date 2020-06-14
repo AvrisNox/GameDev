@@ -55,3 +55,12 @@ dependencies {
 	
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+task Avalanche(type: JavaExec) {
+	group = 'Engine Builds'
+	description = 'Avalanche engine'
+
+	classpath sourceSets.main.runtimeClasspath
+	main = "com.avrisnox.gamedev.build.Avalanche.Avalanche"
+	args ""
+}
