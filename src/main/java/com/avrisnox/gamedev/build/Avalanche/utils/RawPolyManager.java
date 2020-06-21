@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+@SuppressWarnings("WeakerAccess")
 public class RawPolyManager {
 	private List<Integer> vaos = new LinkedList<>();
 	private List<Integer> vbos = new LinkedList<>();
@@ -24,7 +25,7 @@ public class RawPolyManager {
 		}
 	}
 
-	public void loadPoly(float[] positions) {
+	public void load(float[] positions) {
 		int vaoId = createVao();
 		vaos.add(vaoId);
 		storeDataInAttributes(0, positions);
@@ -46,7 +47,7 @@ public class RawPolyManager {
 		return vaoId;
 	}
 
-	private void storeDataInAttributes(int attributeIndex, float[] data) {
+	private void storeDataInAttributes(@SuppressWarnings("SameParameterValue") int attributeIndex, float[] data) {
 		int vboId = GL30.glGenBuffers();
 		vbos.add(vboId);
 		GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboId);

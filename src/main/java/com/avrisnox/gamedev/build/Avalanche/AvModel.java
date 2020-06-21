@@ -1,17 +1,29 @@
 package com.avrisnox.gamedev.build.Avalanche;
 
-import com.avrisnox.gamedev.build.Avalanche.utils.RawPolyManager;
+import com.avrisnox.gamedev.build.Avalanche.utils.LoadManager;
 import com.avrisnox.gamedev.mvc.model.Model;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALCCapabilities;
+import org.lwjgl.openal.ALCapabilities;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.ALC10.*;
+import static org.lwjgl.openal.EXTThreadLocalContext.alcSetThreadContext;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class AvModel extends Model {
 	protected State game;
 	protected State menu;
-	protected RawPolyManager manager;
+	protected LoadManager manager;
+	private final long alcCTX;
+	private final long device;
 
 	protected class State {
 		HashMap<Integer, State> transitions;
@@ -71,7 +83,19 @@ public class AvModel extends Model {
 		menu = menu_main;
 
 		/* Polygon loading (outsourced) */
-		manager = new RawPolyManager();
+		manager = new LoadManager();
+
+		device = alcOpenDevice((ByteBuffer)null);
+		if(device == NULL)
+			throw new RuntimeException("Could not get default audio device.");
+		ALCCapabilities devCap = ALC.createCapabilities(device);
+		if(!devCap.OpenALC10)
+			throw new IllegalStateException();
+
+		String defaultDevice = Objects.requireNonNull(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER));
+		alcCTX = alcCreateContext(device, (IntBuffer)null);
+		alcSetThreadContext(alcCTX);
+		ALCapabilities alCap = AL.createCapabilities(devCap);
 	}
 
 	@Override
@@ -87,14 +111,16 @@ public class AvModel extends Model {
 				-0.5f, 0.5f, 0f
 		};
 
-		manager.loadPoly(vertices);
+		manager.POLY_MANAGER.load(vertices);
+
+		manager.AUDIO_MANAGER.load("src/main/resources/file_example_OOG_1MG.ogg", "Audio.Menu.Main");
 	}
 
 	protected final void setGameStart(State start) {
 		game = start;
 	}
 
-	public RawPolyManager getManager() {
+	public LoadManager getManager() {
 		return manager;
 	}
 
@@ -143,11 +169,21 @@ public class AvModel extends Model {
 		if(menu.getId().equals("Menu.Close"))
 			glfwSetWindowShouldClose(getWindow(), true);
 
+		if(menu.getId().equals("Menu.MainMenu"))
+			manager.AUDIO_MANAGER.enableSound("Audio.Menu.Main");
+		else
+			manager.AUDIO_MANAGER.disableSound("Audio.Menu.Main");
+
 		running = !glfwWindowShouldClose(getWindow());
+		manager.AUDIO_MANAGER.simAudio();
 	}
 
 	@Override
 	public void destroy() {
+		alcMakeContextCurrent(NULL);
+		AL.setCurrentThread(null);
+		alcDestroyContext(alcCTX);
+		alcCloseDevice(device);
 		manager.close();
 	}
 }

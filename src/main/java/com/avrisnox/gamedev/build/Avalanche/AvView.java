@@ -131,10 +131,11 @@ public class AvView<MType extends AvModel> extends View<MType> {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.bind();
-		model.getManager().renderPolys();
+		model.getManager().POLY_MANAGER.renderPolys();
 		shader.unbind();
 
 		glfwSwapBuffers(model.getWindow());
+
 	}
 
 	@Override

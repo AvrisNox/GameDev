@@ -1,19 +1,19 @@
 package com.avrisnox.gamedev.build.Avalanche.utils;
 
-public class RawPoly {
+class RawPoly {
 	private int vaoId;
 	private int vertexCount;
 
-	public RawPoly(int vaoId, int vertexCount) {
+	RawPoly(int vaoId, int vertexCount) {
 		this.vaoId = vaoId;
 		this.vertexCount = vertexCount;
 	}
 
-	public int getVaoId() {
+	int getVaoId() {
 		return vaoId;
 	}
 
-	public int getVertexCount() {
+	int getVertexCount() {
 		return vertexCount;
 	}
 }
