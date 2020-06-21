@@ -2,8 +2,9 @@ package com.avrisnox.gamedev.mvc.controller;
 
 import com.avrisnox.gamedev.mvc.model.Model;
 
-public abstract class Controller {
-	protected Model model;
+@SuppressWarnings("WeakerAccess")
+public abstract class Controller <MType extends Model> {
+	protected MType model;
 	protected GenericKeyHandler keys;
 	protected GenericMouseHandler mouse;
 	protected GenericJoystickHandler joys;
@@ -22,7 +23,7 @@ public abstract class Controller {
 
 	public Controller() { }
 
-	public void init(Model model) {
+	public void init(MType model) {
 		this.model = model;
 	}
 

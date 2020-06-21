@@ -5,20 +5,32 @@ import com.avrisnox.gamedev.mvc.controller.Controller;
 import com.avrisnox.gamedev.mvc.model.Model;
 import com.avrisnox.gamedev.mvc.view.View;
 import org.lwjgl.glfw.GLFWErrorCallback;
+
 import java.lang.reflect.InvocationTargetException;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 
 
-public class Avalanche extends Engine {
-	public Avalanche(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+@SuppressWarnings("WeakerAccess")
+public class Avalanche<AvMType extends AvModel, AvVType extends AvView<AvMType>, AvCType extends AvController<AvMType>> extends Engine<AvMType, AvVType, AvCType> {
+	public Avalanche(Class<AvMType> mClass, Class<AvVType> vClass, Class<AvCType> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		super(mClass, vClass, cClass);
 	}
 
-	public static void start(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) {
+	public static <AvMType extends Model, AvVType extends View<AvMType>, AvCType extends Controller<AvMType>> void start(Class<AvMType> mClass, Class<AvVType> vClass, Class<AvCType> cClass) {
+		if (!AvModel.class.isAssignableFrom(mClass) || !AvView.class.isAssignableFrom(vClass) || !AvController.class.isAssignableFrom(cClass)) {
+			throw new IllegalArgumentException("Either the model, view, or controller did not extend an avalanche type.");
+		}
+
 		try {
-			Avalanche engine = new Avalanche(mClass, vClass, cClass);
+			@SuppressWarnings("unchecked")
+			Class<AvModel> fixM = (Class<AvModel>) mClass;
+			@SuppressWarnings("unchecked")
+			Class<AvView<AvModel>> fixV = (Class<AvView<AvModel>>) vClass;
+			@SuppressWarnings("unchecked")
+			Class<AvController<AvModel>> fixC = (Class<AvController<AvModel>>) cClass;
+			Avalanche<AvModel, AvView<AvModel>, AvController<AvModel>> engine = new Avalanche<>(fixM, fixV, fixC);
 			engine.run();
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
 			e.printStackTrace();
@@ -39,6 +51,7 @@ public class Avalanche extends Engine {
 	}
 
 	public static void main(String... args) {
+		//noinspection unchecked
 		Avalanche.start(
 				AvModel.class,
 				AvView.class,
