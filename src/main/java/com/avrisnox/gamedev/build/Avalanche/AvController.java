@@ -1,14 +1,12 @@
 package com.avrisnox.gamedev.build.Avalanche;
 
 import com.avrisnox.gamedev.mvc.controller.Controller;
-import com.avrisnox.gamedev.mvc.model.Model;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwSetJoystickCallback;
 
-public class AvController extends Controller {
+public class AvController<MType extends AvModel> extends Controller<MType> {
 	private class KeyHandler extends GenericKeyHandler {
-		private void event(long window, int key, int scancode, int action, int mods) {
+		private void event(long window, int key, @SuppressWarnings("unused") int scancode, int action, int mods) {
 			if(model.getWindow() == window)
 				model.keyEvent(key, action, mods);
 		}
@@ -78,7 +76,7 @@ public class AvController extends Controller {
 	}
 
 	@Override
-	public void init(Model model) {
+	public void init(MType model) {
 		super.init(model);
 		long window = this.model.getWindow();
 
