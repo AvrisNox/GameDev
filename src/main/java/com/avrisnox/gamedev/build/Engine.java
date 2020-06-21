@@ -10,29 +10,30 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Engine abstract - all builds must extend "Engine"
  */
-public abstract class Engine {
+@SuppressWarnings("WeakerAccess")
+public abstract class Engine<MType extends Model, VType extends View<MType>, CType extends Controller<MType>> {
 	/* ---CLASS VARS--- */
-	protected Model model;
-	protected View view;
-	protected Controller controller;
+	protected MType model;
+	protected VType view;
+	protected CType controller;
 	protected long window;
 
-	public Engine(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public Engine(Class<MType> mClass, Class<VType> vClass, Class<CType> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		model = mClass.getConstructor().newInstance();
 		model.init(this);
 		view = vClass.getConstructor().newInstance();
 		view.init(model);
 		controller = cClass.getConstructor().newInstance();
 		controller.init(model);
+
+		model.load();
 	}
 
-	public static void start(Class<? extends Model> mClass, Class<? extends View> vClass, Class<? extends Controller> cClass) {
+	@SuppressWarnings("unused")
+	public static <MType extends Model, VType extends View<MType>, CType extends Controller<MType>> void start(Class<MType> mClass, Class<VType> vClass, Class<CType> cClass) {
 		throw new NotImplementedException();
 	}
 
-	/**
-	 * Primary entrypoint for the application (if main exists, process args if necessary and then call run)
-	 */
 	public void run() {
 		init();
 		while(model.isRunning()) {
@@ -49,7 +50,10 @@ public abstract class Engine {
 	protected void draw() {
 		view.draw();
 	}
-	protected void destroy(){ }
+	protected void destroy(){
+		model.destroy();
+		view.destroy();
+	}
 
 	public void setWindow(long window) {
 		this.window = window;
