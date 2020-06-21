@@ -68,8 +68,10 @@ public abstract class Engine<MType extends Model, VType extends View<MType>, CTy
 		init();
 		try {
 			while (model.isRunning()) {
+				preloop();
 				update();
 				draw();
+				postloop();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -86,6 +88,11 @@ public abstract class Engine<MType extends Model, VType extends View<MType>, CTy
 	}
 
 	/**
+	 * This is for any extra work that should be done before calling update.
+	 */
+	protected void preloop() { }
+
+	/**
 	 * Performs engine updates before drawing.
 	 */
 	protected void update() {
@@ -99,6 +106,11 @@ public abstract class Engine<MType extends Model, VType extends View<MType>, CTy
 	protected void draw() {
 		view.draw();
 	}
+
+	/**
+	 * This is for any extra work that should be done after calling draw.
+	 */
+	protected void postloop() { }
 
 	/**
 	 * Destroys all resources when the engine shuts down.
