@@ -26,17 +26,27 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 @SuppressWarnings("WeakerAccess")
 public class RawSoundManager {
-	private HashMap<String, Boolean> status = new HashMap<>();
+	private HashMap<String, Integer> status = new HashMap<>();
 
 	private List<RawSound> sounds = new LinkedList<>();
 
 	public void simAudio() {
 		for(RawSound sound : sounds) {
 			int state = alGetSourcei(sound.getSource(), AL_SOURCE_STATE);
-			if(status.getOrDefault(sound.getId(), false) && (state == AL_PAUSED || state == AL_STOPPED))
-				alSourcePlay(sound.getSource());
-			if(!status.getOrDefault(sound.getId(), true) && state == AL_PLAYING)
-				alSourceStop(sound.getSource());
+			switch(status.getOrDefault(sound.getId(), -1)) {
+				case 0:
+					if(state == AL_PAUSED || state == AL_STOPPED)
+						alSourcePlay(sound.getSource());
+					break;
+				case 1:
+					if(state == AL_PLAYING)
+						alSourcePause(sound.getSource());
+					break;
+				case 2:
+					if(state == AL_PLAYING)
+						alSourceStop(sound.getSource());
+					break;
+			}
 		}
 	}
 
@@ -56,11 +66,15 @@ public class RawSoundManager {
 	}
 
 	public void enableSound(String id) {
-		status.put(id, true);
+		status.put(id, 0);
 	}
 
 	public void disableSound(String id) {
-		status.put(id, false);
+		status.put(id, 2);
+	}
+
+	public void pauseSound(String id) {
+		status.put(id, 1);
 	}
 
 	private ShortBuffer readVorbis(String file, @SuppressWarnings("SameParameterValue") int size, STBVorbisInfo info) {

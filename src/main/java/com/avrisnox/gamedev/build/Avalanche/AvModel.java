@@ -102,13 +102,13 @@ public class AvModel extends Model {
 	public void load() {
 		float[] vertices = {
 				// Left bottom triangle
-				-0.5f, 0.5f, 0f,
-				-0.5f, -0.5f, 0f,
-				0.5f, -0.5f, 0f,
+				-0.55f, 0.5f, 0f,
+				-0.55f, -0.55f, 0f,
+				0.5f, -0.55f, 0f,
 				// Right top triangle
-				0.5f, -0.5f, 0f,
-				0.5f, 0.5f, 0f,
-				-0.5f, 0.5f, 0f
+				0.55f, -0.5f, 0f,
+				0.55f, 0.55f, 0f,
+				-0.5f, 0.55f, 0f
 		};
 
 		manager.POLY_MANAGER.load(vertices);
@@ -171,8 +171,10 @@ public class AvModel extends Model {
 
 		if(menu.getId().equals("Menu.MainMenu"))
 			manager.AUDIO_MANAGER.enableSound("Audio.Menu.Main");
-		else
+		else if(menu.getId().equals("Menu.QuitMenu"))
 			manager.AUDIO_MANAGER.disableSound("Audio.Menu.Main");
+		else
+			manager.AUDIO_MANAGER.pauseSound("Audio.Menu.Main");
 
 		running = !glfwWindowShouldClose(getWindow());
 		manager.AUDIO_MANAGER.simAudio();
