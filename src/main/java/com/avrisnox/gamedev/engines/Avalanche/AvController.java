@@ -1,4 +1,4 @@
-package com.avrisnox.gamedev.build.Avalanche;
+package com.avrisnox.gamedev.engines.Avalanche;
 
 import com.avrisnox.gamedev.mvc.controller.Controller;
 

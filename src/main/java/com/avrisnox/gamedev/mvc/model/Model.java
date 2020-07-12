@@ -1,6 +1,6 @@
 package com.avrisnox.gamedev.mvc.model;
 
-import com.avrisnox.gamedev.build.Engine;
+import com.avrisnox.gamedev.engines.Engine;
 
 /**
  * Model type for <bold>M</bold>VC.

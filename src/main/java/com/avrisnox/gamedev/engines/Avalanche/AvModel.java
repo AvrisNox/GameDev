@@ -1,6 +1,6 @@
-package com.avrisnox.gamedev.build.Avalanche;
+package com.avrisnox.gamedev.engines.Avalanche;
 
-import com.avrisnox.gamedev.build.Avalanche.utils.LoadManager;
+import com.avrisnox.gamedev.engines.Avalanche.utils.LoadManager;
 import com.avrisnox.gamedev.mvc.model.Model;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;

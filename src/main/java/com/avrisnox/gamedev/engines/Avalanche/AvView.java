@@ -1,6 +1,6 @@
-package com.avrisnox.gamedev.build.Avalanche;
+package com.avrisnox.gamedev.engines.Avalanche;
 
-import com.avrisnox.gamedev.build.Avalanche.utils.FileAccess;
+import com.avrisnox.gamedev.engines.Avalanche.utils.FileAccess;
 import com.avrisnox.gamedev.mvc.view.View;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -121,8 +121,8 @@ public class AvView<MType extends AvModel> extends View<MType> {
 		this.model.setWindow(window);
 
 		shader = new Shader();
-		shader.attachVert("src/main/java/com/avrisnox/gamedev/build/Avalanche/shaders/vert.vs");
-		shader.attackFrag("src/main/java/com/avrisnox/gamedev/build/Avalanche/shaders/frag.fs");
+		shader.attachVert("src/main/java/com/avrisnox/gamedev/engines/Avalanche/shaders/vert.vs");
+		shader.attackFrag("src/main/java/com/avrisnox/gamedev/engines/Avalanche/shaders/frag.fs");
 		shader.link();
 	}
 
