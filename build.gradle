@@ -58,9 +58,18 @@ dependencies {
 
 task Avalanche(type: JavaExec) {
 	group = 'Engine Builds'
-	description = 'Avalanche engine'
+	description = 'Build the base Avalanche Engine instance'
 
 	classpath sourceSets.main.runtimeClasspath
-	main = "com.avrisnox.gamedev.build.Avalanche.Avalanche"
+	main = "com.avrisnox.gamedev.engines.Avalanche.Avalanche"
+	args ""
+}
+
+task Wildfire(type: JavaExec) {
+	group = 'Engine Builds'
+	description = 'Build the base Wildfire Engine instance'
+
+	classpath sourceSets.main.runtimeClasspath
+	main = "com.avrisnox.gamedev.engines.Wildfire.Wildfire"
 	args ""
 }
