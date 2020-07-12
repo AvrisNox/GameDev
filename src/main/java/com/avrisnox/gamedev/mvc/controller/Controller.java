@@ -66,9 +66,12 @@ public abstract class Controller <MType extends Model> {
 		preupdate();
 
 		/* Various handling */
-		keys.update();
-		mouse.update();
-		joys.update();
+		if(keys != null)
+			keys.update();
+		if(mouse != null)
+			mouse.update();
+		if(joys != null)
+			joys.update();
 
 		postupdate();
 	}
