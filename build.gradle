@@ -61,6 +61,6 @@ task Avalanche(type: JavaExec) {
 	description = 'Avalanche engine'
 
 	classpath sourceSets.main.runtimeClasspath
-	main = "com.avrisnox.gamedev.build.Avalanche.Avalanche"
+	main = "com.avrisnox.gamedev.engines.Avalanche.Avalanche"
 	args ""
 }

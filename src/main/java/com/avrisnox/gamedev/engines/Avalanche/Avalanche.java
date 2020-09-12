@@ -14,11 +14,13 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Avalanche<AvMType extends AvModel, AvVType extends AvView<AvMType>, AvCType extends AvController<AvMType>> extends Engine<AvMType, AvVType, AvCType> {
 	private double startTime;
 	private double endTime;
+	private int counter;
 
 	public Avalanche(Class<AvMType> mClass, Class<AvVType> vClass, Class<AvCType> cClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		super(mClass, vClass, cClass);
 		startTime = 0;
 		endTime = 0;
+		counter = 0;
 	}
 
 	public static <AvMType extends Model, AvVType extends View<AvMType>, AvCType extends Controller<AvMType>> void start(Class<AvMType> mClass, Class<AvVType> vClass, Class<AvCType> cClass) {
@@ -44,9 +46,13 @@ public class Avalanche<AvMType extends AvModel, AvVType extends AvView<AvMType>,
 	protected void postloop() {
 		endTime = glfwGetTime();
 		double delta = endTime - startTime;
-		double frames = 1/delta;
-		System.out.printf("Delt:%.6f\t\tFps:%.2f\n", delta, frames);
+		double frames = 1 / delta;
 		startTime = endTime;
+		if(counter >= 50) {
+			System.out.printf("Delt:%.6f\t\tFps:%.2f\n", delta, frames);
+			counter = 0;
+		} else
+			counter++;
 	}
 
 	@Override
